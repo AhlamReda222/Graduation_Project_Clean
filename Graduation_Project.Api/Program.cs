@@ -30,7 +30,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 .AddDefaultTokenProviders();
  
 builder.Configuration
-    .AddJsonFile("appsettings.json", optional: false)
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
  
