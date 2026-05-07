@@ -1,0 +1,15 @@
+using Microsoft.AspNetCore.Http;
+
+namespace Graduation_Project.BLL.DTOs.Product
+{
+public class PredictPriceDto
+{
+    public string ProductName { get; set; }
+    public string Description { get; set; }
+    public string Category { get; set; }
+    public decimal BasePrice { get; set; }
+    public string? BrandName { get; set; }
+            public IFormFile? Image { get; set; }
+
+}
+}
