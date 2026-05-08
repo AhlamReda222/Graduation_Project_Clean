@@ -11,6 +11,7 @@ namespace Graduation_Project.DAL.Models.Entities
     public class Product
     {
         public int ProductId { get; set; }
+        public int UserId { get; set; }
         public int BrandId { get; set; }
         public int CategoryId { get; set; }
         public string ProductName { get; set; }

@@ -5,6 +5,8 @@ namespace Graduation_Project.BLL.DTOs.Product
     public class ProductDto
     {
         public int ProductId { get; set; }
+                public int UserId { get; set; }
+
         public int BrandId { get; set; }
         public string BrandName { get; set; }
         public int CategoryId { get; set; }

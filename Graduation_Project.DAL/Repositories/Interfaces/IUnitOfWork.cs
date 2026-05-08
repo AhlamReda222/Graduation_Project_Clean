@@ -26,7 +26,7 @@ namespace Graduation_Project.DAL.Repositories.Interfaces
          IGenericRepository<Notification> Notifications { get; }
         IGenericRepository<InAppEmail> InAppEmails { get; }
         IGenericRepository<PasswordResetCode> PasswordResetCodes { get; }
-                IGenericRepository<WishlistItem> WishlistItems { get; }
+        IGenericRepository<WishlistItem> WishlistItems { get; }
 
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task<int> SaveAsync();

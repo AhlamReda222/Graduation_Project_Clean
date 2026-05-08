@@ -588,6 +588,7 @@ public async Task<ServiceResult<ProductDto>> CreateProductAsync(int userId, int 
      private ProductDto MapToDto(Product product) => new ProductDto
 {
     ProductId = product.ProductId,
+    UserId =product.UserId,
     BrandId = product.BrandId,
     BrandName = product.Brand?.BrandName,
     CategoryId = product.CategoryId,
