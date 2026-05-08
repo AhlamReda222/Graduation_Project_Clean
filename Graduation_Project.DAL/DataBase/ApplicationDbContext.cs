@@ -34,6 +34,8 @@ namespace Graduation_Project.DAL.DataBase
         public DbSet<ProductCustomizationZone> ProductCustomizationZones { get; set; }
         public DbSet<PrintingTechnique> PrintingTechniques { get; set; }
         public DbSet<OrderItemCustomization> OrderItemCustomizations { get; set; }
+                public DbSet<UserBehaviorEvent> UserBehaviorEvents { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

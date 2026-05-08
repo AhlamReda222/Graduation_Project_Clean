@@ -126,6 +126,7 @@ builder.Services.AddScoped<IEmailSender, SmartEmailSender>();
 // ✅ ProductAIService بيعتمد على IAiModerationService (HttpClient)
 builder.Services.AddScoped<IProductAIService, ProductAIService>();
  builder.Services.AddScoped<NotificationHelper>();
+builder.Services.AddScoped<IUserBehaviorService, UserBehaviorService>();
 
 // ✅ ProductService بيعتمد على IProductAIService و IAiModerationService
 // لازم نسجله بـ factory عشان يأخذ IAiModerationService من الـ HttpClient
