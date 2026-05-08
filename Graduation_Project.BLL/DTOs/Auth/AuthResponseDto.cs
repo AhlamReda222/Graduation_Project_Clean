@@ -15,6 +15,7 @@
         public string? Email { get; set; }
 
         public string? UserType { get; set; }
+        public int UserId { get; set; }
     }
 }
 

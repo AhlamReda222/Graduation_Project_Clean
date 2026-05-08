@@ -277,12 +277,15 @@ namespace Graduation_Project.BLL.Services.Implementations
         private AuthResponseDto Success(string jwt, string refresh, ApplicationUser user, string message)
             => new AuthResponseDto
             {
+
                 IsSuccess = true,
                 Message = message,
                 Token = jwt,
                 RefreshToken = refresh,
                 Email = user.Email,
-                UserType = user.UserType.ToString()
+                UserType = user.UserType.ToString(),
+                 UserId = user.Id,
+
             };
     }
 }
