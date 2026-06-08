@@ -18,6 +18,8 @@ using Graduation_Project.BLL.Common;
 var builder = WebApplication.CreateBuilder(args);
  
 // ================= DATABASE =================
+var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine($"CONNECTION = [{conn}]");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
  
