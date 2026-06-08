@@ -18,15 +18,20 @@ using Graduation_Project.BLL.Common;
 var builder = WebApplication.CreateBuilder(args);
  
 // ================= DATABASE =================
-var connectionString =
-    Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+//var connectionString =
+   // Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+ //   options.UseNpgsql(connectionString));
+
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+ var connectionString =
+    Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
-    
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    //options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
- 
 // ================= IDENTITY =================
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 {
