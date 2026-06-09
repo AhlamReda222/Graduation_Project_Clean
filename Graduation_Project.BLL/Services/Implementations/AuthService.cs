@@ -15,13 +15,15 @@ namespace Graduation_Project.BLL.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITokenService _tokenService;
         private readonly IEmailSender _emailSender;
+        private readonly IUserBehaviorService _userBehaviorService;
 
         public AuthService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IUnitOfWork unitOfWork,
             ITokenService tokenService,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUserBehaviorService userBehaviorService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -65,7 +67,7 @@ namespace Graduation_Project.BLL.Services.Implementations
         }
 
         // ── Login ──
-        public async Task<AuthResponseDto> LoginAsync(LoginDto model)
+        public async Task<AuthResponseDto> LoginAsync(LoginDto model,  string? sessionId)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null || user.IsBlocked)
@@ -74,6 +76,9 @@ namespace Graduation_Project.BLL.Services.Implementations
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
             if (!passwordCheck.Succeeded)
                 return Fail("Invalid credentials");
+                  if (!string.IsNullOrEmpty(sessionId))
+        await _userBehaviorService.LinkSessionToUserAsync(sessionId, user.Id);
+ 
 
             return await GenerateTokensAndReturn(user, "Login successful");
         }

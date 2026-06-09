@@ -1,4 +1,5 @@
-﻿using Graduation_Project.BLL.DTOs.Auth;
+﻿using Graduation_Project.BLL.Common;
+using Graduation_Project.BLL.DTOs.Auth;
 using Graduation_Project.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,13 +22,21 @@ namespace Graduation_Project.Api.Controllers
             var result = await _authService.RegisterAsync(dto);
             return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
+[HttpPost("login")]
+public async Task<IActionResult> Login(LoginDto dto)
+{
+    var sessionId =
+        Request.Headers["X-Session-Id"]
+        .FirstOrDefault();
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto dto)
-        {
-            var result = await _authService.LoginAsync(dto);
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
-        }
+    var result =
+        await _authService.LoginAsync(
+            dto,
+            sessionId);
+
+    return Ok(result);
+}
+ 
 
         [HttpPost("google-login")]
         public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginDto dto)
