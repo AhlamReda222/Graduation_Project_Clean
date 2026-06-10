@@ -15,6 +15,7 @@ using Graduation_Project.Api.Hubs;
  
  using Graduation_Project.BLL.Services;
 using Graduation_Project.BLL.Common;
+using Graduation_Project.Api.Middleware;
 var builder = WebApplication.CreateBuilder(args);
  
 // ================= DATABASE =================
@@ -127,6 +128,7 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<INotificationHub, NotificationHubService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddHttpClient<IRecommendationService, RecommendationService>();
  
 // ✅ ProductAIService بيعتمد على IAiModerationService (HttpClient)
 builder.Services.AddScoped<IProductAIService, ProductAIService>();
@@ -143,13 +145,21 @@ builder.Services.AddScoped<IUserBehaviorService, UserBehaviorService>();
 // لازم نسجله بـ factory عشان يأخذ IAiModerationService من الـ HttpClient
 builder.Services.AddScoped<IProductService>(sp =>
 {
-    var unitOfWork          = sp.GetRequiredService<IUnitOfWork>();
-    var fileService         = sp.GetRequiredService<IFileService>();
-    var productAIService    = sp.GetRequiredService<IProductAIService>();
-    var aiModerationService = sp.GetRequiredService<IAiModerationService>();
+    var unitOfWork             = sp.GetRequiredService<IUnitOfWork>();
+    var fileService            = sp.GetRequiredService<IFileService>();
+    var productAIService       = sp.GetRequiredService<IProductAIService>();
+    var aiModerationService    = sp.GetRequiredService<IAiModerationService>();
+    var recommendationService  = sp.GetRequiredService<IRecommendationService>(); // ✅ جديد
  
-    return new ProductService(unitOfWork, fileService, productAIService, aiModerationService);
+    return new ProductService(
+        unitOfWork,
+        fileService,
+        productAIService,
+        aiModerationService,
+        recommendationService // ✅ جديد
+    );
 });
+
  
 // ================= EMAIL =================
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -190,7 +200,8 @@ app.UseStaticFiles();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
- 
+app.UseSessionTracking(); // ✅ هنا
+
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.MapHub<ChatHub>("/hubs/chat");
 app.MapControllers();

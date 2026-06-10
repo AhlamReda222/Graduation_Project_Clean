@@ -30,6 +30,7 @@ namespace Graduation_Project.BLL.Services.Implementations
             _unitOfWork = unitOfWork;
             _tokenService = tokenService;
             _emailSender = emailSender;
+            _userBehaviorService = userBehaviorService;
         }
 
         // ── Register ──

@@ -28,5 +28,7 @@ namespace Graduation_Project.DAL.Models.Entities
         public virtual ICollection<Conversation> BrandOwnerConversations { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<Product> ApprovedProducts { get; set; }
+        public virtual ICollection<UserBehaviorEvent> BehaviorEvents{ get; set; }
+
     }
 }

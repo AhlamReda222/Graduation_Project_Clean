@@ -14,15 +14,21 @@ namespace Graduation_Project.BLL.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
             private readonly IProductAIService _productAIService;
           private readonly IAiModerationService  _aiModerationService;
+          private readonly IRecommendationService _recommendationService;
 
 
-        public ProductService(IUnitOfWork unitOfWork,
-    IFileService fileService ,IProductAIService productAIService,IAiModerationService aiModerationService)
+    public ProductService(
+    IUnitOfWork            unitOfWork,
+    IFileService           fileService,
+    IProductAIService      productAIService,
+    IAiModerationService   aiModerationService,
+    IRecommendationService recommendationService) // ✅ جديد
 {
-    _unitOfWork = unitOfWork;
-    _fileService = fileService;
-    _productAIService = productAIService;
-    _aiModerationService = aiModerationService;
+    _unitOfWork            = unitOfWork;
+    _fileService           = fileService;
+    _productAIService      = productAIService;
+    _aiModerationService   = aiModerationService;
+    _recommendationService = recommendationService; // ✅ جديد
 }
 public async Task<ServiceResult<ProductDto>> CreateProductAsync(int userId, int brandId, CreateProductDto dto)
 {
@@ -242,6 +248,8 @@ public async Task<ServiceResult<ProductDto>> CreateProductAsync(int userId, int 
             ApprovalStatus.Rejected => $"Product rejected: {aiResult.Reason}",
             _                       => "Product created and pending manual approval"
         };
+        
+        _ = _recommendationService.RefreshRecommendationsAsync();
 
         return ServiceResult<ProductDto>.Success(productDto.Data, message);
     }
@@ -484,6 +492,8 @@ public async Task<ServiceResult<ProductDto>> CreateProductAsync(int userId, int 
         await _unitOfWork.SaveAsync();
 
         var result = await GetProductByIdAsync(productId);
+                _ = _recommendationService.RefreshRecommendationsAsync();
+
 
         return ServiceResult<ProductDto>.Success(
             result.Data,
@@ -516,6 +526,7 @@ public async Task<ServiceResult<ProductDto>> CreateProductAsync(int userId, int 
                 _unitOfWork.Products.Delete(product);
                 await _unitOfWork.SaveAsync();
 
+                        _ = _recommendationService.RefreshRecommendationsAsync();
                 return ServiceResult<bool>.Success(true, "Product deleted successfully");
             }
             catch (Exception ex)
